@@ -29,7 +29,20 @@ You don't have to use the [code](../firmware-atmega32u4) included here, you can 
 
 To flash the firmware, we first flash the board with an Arduino Pro Micro bootloader, effectively making it look like an Arduino from the computer's point of view. To do that you're going to need an ISP programmer, either a dedicated one or you can [use an Arduino as an ISP programmer](https://www.arduino.cc/en/Tutorial/BuiltInExamples/ArduinoISP). Install the [SparkFun Arduino add-on](https://learn.sparkfun.com/tutorials/pro-micro--fio-v3-hookup-guide#windows_boardaddon), connect the VCC, MISO, MOSI, SCK, RESET and GND wires, select Arduino Pro Micro 16MHz/5V as the board, select the right programmer depending on the option you went for, and then select "Burn bootloader". If this succeeds, your Flatbox is now an Arduino Pro Micro and you can flash the actual firmware like you would any other Arduino sketch on an actual Arduino board.
 
-(This is not the only way to flash the firmware. The ATmega32U4 chip comes pre-programmed with a DFU bootloader, so in theory you could use that to flash the Arduino bootloader or just flash the firmware directly. But I think the option described above is easier, even though it requires an ISP programmer, because you just use the Arduino IDE for everything.)
+Alternitively if you dont mind downloading some extra software the firmware may be flashed with the default bootloader which comes preinstalled on the ATmega32u4.
+This extra software is Atmel FLIP and may be installed for free at this link: https://www.microchip.com/en-us/development-tool/FLIP. (note you may also need to install the Java runtime environment)
+First follow the steps above until you the arduino IDE successfully compiles the firmware, then in the top ribbon select sketch -> export compiled binary.
+After that compiles and exports select Sketch -> Show Sketch Folder.
+navigate to the binary, open build -> arduino.avr.micro, you should now see a set of hex files as well as some other files.
+Copy {your sketch name}.ino.hex to an easily accessed directory (ie your desktop).
+Run atmel FLIP and note the icons and their respective titles (hovering over them will reveal the name of the operation).
+Using the icon ribbon select load hex file and then select the hex file you saved in the previous step.
+Next click select a target device and in the drop down menue select the ATmega32u4
+Plug in the flatbox via usb to your computer if you havent done so already, then short the reset and GND pads for a second and then release (this puts the chip into bootloader mode).
+In FLIP click the "select a communication medium" icon -> USB -> open (if this fails try to short reset to ground again and repeat quicker this time).
+Then click "Run" at the bottom left of the main window.
+If this succeeds your Flatbox should now be flashed.
+
 
 ![Flatbox rev2 exploded view of the 3D printed case](images/Flatbox-rev2b-exploded.png)
 
